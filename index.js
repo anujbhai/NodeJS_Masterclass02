@@ -12,9 +12,19 @@ const fs = require('fs')
 // resources
 const { searchParamsToObj } = require('./utils')
 const config = require('./config')
+const _data = require('./lib/data')
+
+// TESTING
+// @TODO delete this
+async function updateFile() {
+  const result = await _data.update('test', 'newFile', { fizz: 'buzz' })
+
+  console.log('result', result)
+}
+updateFile()
 
 // instantiate the HTTP server
-const httpServer = http.createServer(async function (req, res) {
+const httpServer = http.createServer(async (req, res) => {
   await unifiedServer(req, res)
 })
 
@@ -23,17 +33,17 @@ const options = {
   key: fs.readFileSync('./https/key.pem'),
   cert: fs.readFileSync('./https/cert.pem'),
 }
-const httpsServer = https.createServer(options, async function (req, res) {
+const httpsServer = https.createServer(options, async (req, res) => {
   await unifiedServer(req, res)
 })
 
 // Start the server
-httpServer.listen(config.httpPort, function () {
+httpServer.listen(config.httpPort, () => {
   console.log(`The server is listening on port ${config.httpPort}`)
 })
 
-// Instantiate the HTTPS server
-httpsServer.listen(config.httpsPort, function () {
+// start the HTTPS server
+httpsServer.listen(config.httpsPort, () => {
   console.log(`The server is listening on port ${config.httpsPort}`)
 })
 
@@ -54,17 +64,17 @@ const unifiedServer = async function (req, res) {
     const method = req.method.toLowerCase()
 
     // --- Get request headers as an object ---
-    const headers = req.headers
+    const { headers } = req
 
     // --- Get the payload if any ---
     const decoder = new StringDecoder('utf-8')
     let buffer = ''
 
     await new Promise((resolve, reject) => {
-      req.on('data', function (data) {
+      req.on('data', (data) => {
         buffer += decoder.write(data)
       })
-      req.on('end', function () {
+      req.on('end', () => {
         buffer += decoder.end()
 
         // --- Choose the handler this request should go to. ---
@@ -83,12 +93,14 @@ const unifiedServer = async function (req, res) {
         }
 
         // --- Route the request to the handler specified in the router ---
-        chosenHandler(data, function (statusCode, payload) {
+        chosenHandler(data, (statusCode, payload) => {
+          let stat = statusCode
+          let pl = payload
           // --- Use the status code called back by the handler, or default to 200 ---
-          statusCode = typeof statusCode === 'number' ? statusCode : 200
+          stat = typeof stat === 'number' ? stat : 200 // eslint-disable-line
 
           // --- Use the payload called back by the handler, or default to an empty object ---
-          payload = typeof payload === 'object' ? payload : {}
+          pl = typeof pl === 'object' ? pl : {} // eslint-disable-line
 
           // --- Convert the payload to a string ---
           const payloadString = JSON.stringify(payload)
@@ -102,12 +114,12 @@ const unifiedServer = async function (req, res) {
           console.log('Returning this response: ', statusCode, payloadString)
         })
       })
-      req.on('error', function (err) {
+      req.on('error', (err) => {
         reject(err)
       })
     })
   } catch (err) {
-    conssole.error('Error processing request', err)
+    console.error('Error processing request', err)
     res.statusCode = 500
     res.end('Internal server error')
   }
