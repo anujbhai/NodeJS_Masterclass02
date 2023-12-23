@@ -4,20 +4,30 @@
     "commonjs": true,
     "es2021": true
   },
-  "extends": "airbnb-base", "prettier",
+  "extends": ["airbnb-base", "prettier"],
   "parserOptions": {
     "ecmaVersion": "latest"
   },
-  "plugins": [
-    "prettier"
-  ],
+  "plugins": ["prettier"],
   "rules": {
-    "prettier/prettier": "error",
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ],
     "no-unused-vars": "warn",
     "no-console": "off",
     "func-names": "off",
     "no-plusplus": "off",
     "no-process-exit": "off",
-    "class-methods-use-this": "off"
+    "class-methods-use-this": "off",
+    "no-use-before-define": [
+      "error",
+      {
+        "variables": false
+      }
+    ],
+    "no-underscore-dangle": "off"
   }
 }
