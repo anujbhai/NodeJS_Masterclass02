@@ -12,16 +12,6 @@ const fs = require('fs')
 // resources
 const { searchParamsToObj } = require('./utils')
 const config = require('./config')
-const _data = require('./lib/data')
-
-// TESTING
-// @TODO delete this
-async function updateFile() {
-  const result = await _data.update('test', 'newFile', { fizz: 'buzz' })
-
-  console.log('result', result)
-}
-updateFile()
 
 // instantiate the HTTP server
 const httpServer = http.createServer(async (req, res) => {
