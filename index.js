@@ -12,6 +12,8 @@ const fs = require('fs')
 // resources
 const { searchParamsToObj } = require('./utils')
 const config = require('./config')
+const handlers = require('./lib/handlers')
+const helpers = require('./lib/helpers')
 
 // instantiate the HTTP server
 const httpServer = http.createServer(async (req, res) => {
@@ -79,7 +81,7 @@ const unifiedServer = async function (req, res) {
           queryStringObject,
           method,
           headers,
-          payload: buffer,
+          payload: helpers.parseJsonToObject(buffer),
         }
 
         // --- Route the request to the handler specified in the router ---
@@ -115,17 +117,8 @@ const unifiedServer = async function (req, res) {
   }
 }
 
-// Define the handlers
-const handlers = {}
-handlers.ping = function (data, callback) {
-  // Callback a http status code, and a payload object
-  callback(200, { name: 'ping' })
-}
-handlers.notFound = function (data, callback) {
-  callback(404)
-}
-
 // Define a request router
 const router = {
   ping: handlers.ping,
+  users: handlers.users,
 }
