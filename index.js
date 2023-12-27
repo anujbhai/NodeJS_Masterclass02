@@ -11,9 +11,17 @@ const fs = require('fs')
 
 // resources
 const { searchParamsToObj } = require('./utils')
-const config = require('./config')
+const config = require('./lib/config')
 const handlers = require('./lib/handlers')
 const helpers = require('./lib/helpers')
+// const _data = require('./lib/data')
+//
+// async function createFile() {
+//   const result = await _data.create('test', 'newFile', { fizz: 'buzz' })
+//
+//   console.log('result', result)
+// }
+// createFile()
 
 // instantiate the HTTP server
 const httpServer = http.createServer(async (req, res) => {
