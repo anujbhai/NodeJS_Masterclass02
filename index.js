@@ -14,10 +14,12 @@ const { searchParamsToObj } = require('./utils')
 const config = require('./lib/config')
 const handlers = require('./lib/handlers')
 const helpers = require('./lib/helpers')
-// const _data = require('./lib/data')
-//
-// async function createFile() {
-//   const result = await _data.create('test', 'newFile', { fizz: 'buzz' })
+const _data = require('./lib/data')
+
+// function createFile() {
+//   const result = _data.create('test', 'newFile1', { fizz: 'buzz' }, (err) => {
+//     console.log('err', err)
+//   })
 //
 //   console.log('result', result)
 // }
