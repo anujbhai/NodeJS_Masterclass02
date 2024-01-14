@@ -1,3 +1,4 @@
+yarn.lock
 # Logs
 logs
 *.log
@@ -74,6 +75,7 @@ web_modules/
 .yarn-integrity
 
 # dotenv environment variable files
+twilio.env
 .env
 .env.development.local
 .env.test.local

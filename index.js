@@ -14,7 +14,12 @@ const { searchParamsToObj } = require('./utils')
 const config = require('./lib/config')
 const handlers = require('./lib/handlers')
 const helpers = require('./lib/helpers')
-const _data = require('./lib/data')
+// const _data = require('./lib/data')
+
+// @TODO remove test run
+helpers.sendTwilioSms('8860081139', 'Hello from NMC', (err) => {
+  console.log('error: ', err)
+})
 
 // function createFile() {
 //   const result = _data.create('test', 'newFile1', { fizz: 'buzz' }, (err) => {
@@ -50,7 +55,7 @@ httpsServer.listen(config.httpsPort, () => {
 })
 
 // All the server logic for both the http and https server
-const unifiedServer = async function (req, res) {
+const unifiedServer = async (req, res) => {
   try {
     // --- Get the URL and parse it ---
     const parsedUrl = new URL(req.url, 'http://localhost:3000/')

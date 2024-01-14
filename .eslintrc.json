@@ -28,6 +28,7 @@
         "variables": false
       }
     ],
-    "no-underscore-dangle": "off"
+    "no-underscore-dangle": "off",
+    "space-before-function-paren": 0
   }
 }
